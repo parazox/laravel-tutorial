@@ -25,9 +25,12 @@
     <input type="hidden" class="form-control" name="article_id" value="{{ $article->id }}">
       <div class="form-group">
         <label for="bodyInput">内容</label>
-        <textarea class="form-control" id="commentInput" rows="3" name="comment"></textarea>
+        <textarea class="form-control" id="commentInput" rows="3" name="comment">{{ old('comment') }}</textarea>
       </div>
       <button type="submit" class="btn btn-primary">コメント</button>
+      @if ($errors->has('comment'))
+          <span class="text-danger">{{ $errors->first('comment') }}</span>
+      @endif
     </form>
 
     @foreach ($article->comments as $comment)
