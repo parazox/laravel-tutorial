@@ -24,16 +24,22 @@ class ArticleController extends Controller
 		$request->validate([
 			'title' => 'required|max:5',
 			'body' => 'required',
+            'attachment' => 'image',
 		],[
 			'title.required' => 'タイトルを入力してください',
 			'title.max' => 'タイトルを5文字以下で入力してください',
 			'body.required' => '本文を入力してください',
+            'attachment.image' => '画像ファイルを選択してください',
 		]);
-        $request->session()->flash('message', '登録したでござる');
         $article = new Article;
         $article->title = $request->title;
         $article->body = $request->body;
+
+        if ($request->file('attachment')) {
+            $article->attachment = basename($request->attachment->store('public/attachment'));
+        }
         $article->save();
+        $request->session()->flash('message', '登録したでござる');
 
         return redirect('/articles/' . $article->id);
     }
@@ -47,17 +53,22 @@ class ArticleController extends Controller
         $request->validate([
 			'title' => 'required|max:5',
 			'body' => 'required',
+            'attachment' => 'image',
 		],[
 			'title.required' => 'タイトルを入力してください',
 			'title.max' => 'タイトルを5文字以下で入力してください',
 			'body.required' => '本文を入力してください',
+            'attachment.image' => '画像ファイルを選択してください',
 		]);
-        $request->session()->flash('message', '登録したでござる');
 
         $article = Article::find($request->id);
         $article->title = $request->title;
         $article->body = $request->body;
+        if ($request->file('attachment')) {
+            $article->attachment = basename($request->attachment->store('public/attachment'));
+        }
         $article->save();
+        $request->session()->flash('message', '登録したでござる');
 
         return redirect('/articles/' . $article->id);
     }

@@ -15,8 +15,15 @@
         <label for="bodyInput">内容</label>
         {!! nl2br(e($article->body)) !!}
       </div>
+
+      @if ($article->attachment)
+        <label>画像</label>
+        <div><img src="/storage/attachment/{{ $article->attachment }}" width="200"></div>
+      @endif
       <button type="submit" class="btn btn-primary">削除</button>
     </form>
+
+    <a href="/edit/{{ $article->id }}">編集</a>
 
 
     <h2>コメント</h2>
